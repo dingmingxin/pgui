@@ -444,7 +444,7 @@ pgui_str_return_rGB(unsigned char r, unsigned char g, unsigned char b) {
 }
 
 char * 
-pgui_str_return_rGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+pgui_str_return_rgba(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
 	char* str = pgui_str_get_small_mem();  
 	sprintf(str, "%d %d %d %d", (int)r, (int)g, (int)b, (int)a);
 	return str;
@@ -510,7 +510,7 @@ pgui_str_to_rGB(const char *str, unsigned char *r, unsigned char *g, unsigned ch
 }
 
 int 
-pgui_str_to_rGBA(const char *str, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a) {
+pgui_str_to_rgba(const char *str, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a) {
 	unsigned int ri = 0, gi = 0, bi = 0, ai = 255;
 	if (!str) return 0;
 	if (str[0] == '#') {
@@ -1047,7 +1047,7 @@ static void i_str_init_latin1_map(void) {
 }
 
 static char 
-i_str_uTF8to_latin1(const char* *l) {
+i_str_utf8to_latin1(const char* *l) {
 	char c = **l;
 	if (c >= 0) 
 		return c;   
@@ -1128,8 +1128,8 @@ pgui_str_compare(const char *l, const char *r, int casesensitive, int utf8) {
 				
 				if(r_digit) return +1;
 				if (utf8) {
-					l_char = i_str_uTF8to_latin1(&l);  
-					r_char = i_str_uTF8to_latin1(&r);
+					l_char = i_str_utf8to_latin1(&l);  
+					r_char = i_str_utf8to_latin1(&r);
 				}
 				
 				if (casesensitive)
@@ -1184,8 +1184,8 @@ pgui_str_compare_equal(const char *l, const char *r, int casesensitive, int utf8
 		char l_char = *l, 
 			 r_char = *r;
 		if (utf8) {
-			l_char = i_str_uTF8to_latin1(&l);  
-			r_char = i_str_uTF8to_latin1(&r);
+			l_char = i_str_utf8to_latin1(&l);  
+			r_char = i_str_utf8to_latin1(&r);
 		}
 		
 		if (casesensitive)
@@ -1208,7 +1208,7 @@ pgui_str_compare_equal(const char *l, const char *r, int casesensitive, int utf8
 }
 
 static int 
-i_str_inc_uTF8(const char* str) {
+i_str_inc_utf8(const char* str) {
 	if (*str >= 0)     
 		return 1;  
 	else if ((*str & 0x20) == 0)  
@@ -1235,7 +1235,7 @@ pgui_str_compare_find(const char *l, const char *r, int casesensitive, int utf8)
 		if (pgui_str_compare_equal(l, r, casesensitive, utf8, 1))
 			return 1;
 		if (utf8) {
-			inc = i_str_inc_uTF8(l);
+			inc = i_str_inc_utf8(l);
 			l += inc;
 			i += inc-1;
 		}
@@ -1246,7 +1246,7 @@ pgui_str_compare_find(const char *l, const char *r, int casesensitive, int utf8)
 }
 
 static void 
-i_str_fix_pos_uTF8(const char* str, int *start, int *end) {
+i_str_fix_pos_utf8(const char* str, int *start, int *end) {
 	int p = 0, i = 0, find = 0, inc;
 	while (*(str + i)) {
 		if (find == 0 && p == *start) {
@@ -1257,7 +1257,7 @@ i_str_fix_pos_uTF8(const char* str, int *start, int *end) {
 			*end = i;
 			return;
 		}
-		inc = i_str_inc_uTF8(str + i);
+		inc = i_str_inc_utf8(str + i);
 		i += inc;
 		p++;
 	}
@@ -1285,7 +1285,7 @@ pgui_str_remove(char* str, int start, int end, int dir, int utf8) {
 		}
 	}
 	if (utf8)
-		i_str_fix_pos_uTF8(str, &start, &end);
+		i_str_fix_pos_utf8(str, &start, &end);
 	
 	len = (int)strlen(str); if (start >= len) { start = len - 1; end = len; }
 	if (end > len) end = len;
@@ -1301,7 +1301,7 @@ pgui_str_insert(const char* str, const char* insert_str, int start, int end, int
 	insert_len = (int)strlen(insert_str);
 	len = (int)strlen(str);
 	if (utf8)
-		i_str_fix_pos_uTF8(str, &start, &end);
+		i_str_fix_pos_utf8(str, &start, &end);
 	if (end == start || insert_len > end - start) {
 		new_str = malloc(len - (end - start) + insert_len + 1);
 		memcpy(new_str, str, start);

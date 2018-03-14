@@ -55,7 +55,7 @@ char * pgui_str_return_int_int(int i1, int i2, char sep);
 int pgui_str_get_format_precision(const char* format);
 void pgui_str_printf_double_locale(char *str, const char *format, double d, const char* decimal_symbol);
 int pgui_str_to_rgb(const char *str, unsigned char *r, unsigned char *g, unsigned char *b);
-int pgui_str_to_rgbA(const char *str, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a);
+int pgui_str_to_rgba(const char *str, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a);
 int pgui_str_to_int(const char *str, int *i);
 int pgui_str_to_uint(const char *str, unsigned int *i);
 int pgui_str_to_int_int(const char *str, int *i1, int *i2, char sep);
