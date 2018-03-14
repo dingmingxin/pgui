@@ -32,8 +32,10 @@
 	/* check also for terminator */      \
 	if (*str1 == *str2) return 1;        \
 }
-int pgui_str_equal(const char* str1, const char* str2) 
-{
+
+
+int 
+pgui_str_equal(const char* str1, const char* str2) {
 #define EXTRAINC(_x) (void)(_x)
 #define SF(_x) (_x)
 	PGUI_STR_EQUAL(str1, str2);
@@ -41,8 +43,10 @@ int pgui_str_equal(const char* str1, const char* str2)
 #undef EXTRAINC
 	return 0;
 }
-int pgui_str_equal_partial(const char* str1, const char* str2) 
-{
+
+
+int 
+pgui_str_equal_partial(const char* str1, const char* str2) {
 #define EXTRAINC(_x) (void)(_x)
 #define SF(_x) (_x)
 	PGUI_STR_EQUAL(str1, str2);
@@ -52,8 +56,9 @@ int pgui_str_equal_partial(const char* str1, const char* str2)
 		return 1;  /* if second string is at terminator, then it is partially equal */
 	return 0;
 }
-int pgui_str_equal_no_case(const char* str1, const char* str2) 
-{
+
+int 
+pgui_str_equal_no_case(const char* str1, const char* str2) {
 #define EXTRAINC(_x) (void)(_x)
 #define SF(_x) pgui_tolower(_x)
 	PGUI_STR_EQUAL(str1, str2);
@@ -61,8 +66,9 @@ int pgui_str_equal_no_case(const char* str1, const char* str2)
 #undef EXTRAINC
 	return 0;
 }
-int pgui_str_equal_no_case_partial(const char* str1, const char* str2) 
-{
+
+int 
+pgui_str_equal_no_case_partial(const char* str1, const char* str2) {
 #define EXTRAINC(_x) (void)(_x)
 #define SF(_x) pgui_tolower(_x)
 	PGUI_STR_EQUAL(str1, str2);
@@ -72,8 +78,9 @@ int pgui_str_equal_no_case_partial(const char* str1, const char* str2)
 		return 1;  /* if second string is at terminator, then it is partially equal */
 	return 0;
 }
-int pgui_str_equal_no_case_no_space(const char* str1, const char* str2) 
-{
+
+int 
+pgui_str_equal_no_case_no_space(const char* str1, const char* str2) {
 #define EXTRAINC(_x) { if (*_x == ' ') _x++; }  /* also ignore spaces */
 #define SF(_x) pgui_tolower(_x)
 	PGUI_STR_EQUAL(str1, str2);
@@ -81,51 +88,53 @@ int pgui_str_equal_no_case_no_space(const char* str1, const char* str2)
 #undef EXTRAINC
 	return 0;
 }
-int pgui_str_false(const char* str)
-{
+
+int 
+pgui_str_false(const char* str) {
 	if (!str || str[0]==0) return 0;
 	if (str[0]=='0' && str[1]==0) return 1;
 	if (pgui_str_equal_no_case(str, "NO")) return 1;
 	if (pgui_str_equal_no_case(str, "OFF")) return 1;
 	return 0;
 }
-int pgui_str_boolean(const char* str)
-{
+
+int 
+pgui_str_boolean(const char* str) {
 	if (!str || str[0]==0) return 0;
 	if (str[0]=='1' && str[1]==0) return 1;
 	if (pgui_str_equal_no_case(str, "YES")) return 1;
 	if (pgui_str_equal_no_case(str, "ON")) return 1;
 	return 0;
 }
-void pgui_str_upper(char* dstr, const char* sstr)
-{
+
+void pgui_str_upper(char* dstr, const char* sstr) {
 	if (!sstr || sstr[0] == 0) return;
 	for (; *sstr; sstr++, dstr++)
 		*dstr = (char)pgui_toupper(*sstr);
 	*dstr = 0;
 }
-void pgui_str_lower(char* dstr, const char* sstr)
-{
+
+void pgui_str_lower(char* dstr, const char* sstr) {
 	if (!sstr || sstr[0] == 0) return;
 	for (; *sstr; sstr++, dstr++)
 		*dstr = (char)pgui_tolower(*sstr);
 	*dstr = 0;
 }
-int pgui_str_has_space(const char* str)
-{
+
+int 
+pgui_str_has_space(const char* str) {
 	if (!str) return 0;
-	while (*str)
-	{
+	while (*str) {
 		if (*str == ' ')
 			return 1;
 		str++;
 	}
 	return 0;
 }
-char *pgui_str_dup(const char *str)
-{
-	if (str)
-	{
+
+char *
+pgui_str_dup(const char *str) {
+	if (str) {
 		int size = (int)strlen(str)+1;
 		char *newstr = malloc(size);
 		if (newstr) memcpy(newstr, str, size);
@@ -133,31 +142,28 @@ char *pgui_str_dup(const char *str)
 	}
 	return NULL;
 }
-const char* pgui_str_next_line(const char* str, int *len)
-{
+
+const char* pgui_str_next_line(const char* str, int *len) {
 	*len = 0;
 	if (!str) return NULL;
-	while(*str!=0 && *str!='\n' && *str!='\r') 
-	{
+	while(*str!=0 && *str!='\n' && *str!='\r') {
 		(*len)++;
 		str++;
 	}
-	if (*str=='\r' && *(str+1)=='\n')   /* DOS line end */
+	if (*str=='\r' && *(str+1)=='\n')   
 		return str+2;
-	else if (*str=='\n' || *str=='\r')   /* UNIX or MAC line end */
+	else if (*str=='\n' || *str=='\r')   
 		return str+1;
 	else 
-		return str;  /* no next line */
+		return str;  
 }
-const char* pgui_str_next_value(const char* str, int str_len, int *len, char sep)
-{
+
+const char* pgui_str_next_value(const char* str, int str_len, int *len, char sep) {
 	int ignore_sep = 0;
 	*len = 0;
 	if (!str) return NULL;
-	while (*str != 0 && (*str != sep || ignore_sep) && *len<str_len)
-	{
-		if (*str == '\"')
-		{
+	while (*str != 0 && (*str != sep || ignore_sep) && *len<str_len) {
+		if (*str == '\"') {
 			if (ignore_sep)
 				ignore_sep = 0;
 			else
@@ -169,53 +175,51 @@ const char* pgui_str_next_value(const char* str, int str_len, int *len, char sep
 	if (*str==sep)
 		return str+1;
 	else 
-		return str;  /* no next value */
+		return str;  
 }
-int pgui_str_line_count(const char* str)
-{
+
+int 
+pgui_str_line_count(const char* str) {
 	int num_lin = 1;
 	if (!str)
 		return num_lin;
-	while(*str != 0)
-	{
+	while(*str != 0) {
 		while(*str!=0 && *str!='\n' && *str!='\r')
 			str++;
-		if (*str=='\r' && *(str+1)=='\n')   /* DOS line end */
-		{
+		if (*str=='\r' && *(str+1)=='\n')   {
 			num_lin++;
 			str+=2;
 		}
-		else if (*str=='\n' || *str=='\r')   /* UNIX or MAC line end */
-		{
+		else if (*str=='\n' || *str=='\r')  {
 			num_lin++;
 			str++;
 		}
 	}
 	return num_lin;
 }
-int pgui_str_count_char(const char *str, char c)
-{
+
+int 
+pgui_str_count_char(const char *str, char c) {
 	int n;
 	if (!str) return 0;
-	for (n=0; *str; str++)
-	{
+	for (n=0; *str; str++) {
 		if (*str==c)
 			n++;
 	}
 	return n;
 }
-void pgui_str_copy_n(char* dst_str, int dst_max_size, const char* src_str)
-{
-	if (src_str)
-	{
+
+void pgui_str_copy_n(char* dst_str, int dst_max_size, const char* src_str) {
+	if (src_str) {
 		int size = (int)strlen(src_str) + 1;
 		if (size > dst_max_size) size = dst_max_size;
 		memcpy(dst_str, src_str, size - 1);
 		dst_str[size - 1] = 0;
 	}
 }
-char* pgui_str_dup_until(const char **str, char c)
-{
+
+char * 
+pgui_str_dup_until(const char **str, char c) {
 	const char *p_str;
 	char *new_str;
 	if (!str || str[0]==0)
@@ -223,8 +227,7 @@ char* pgui_str_dup_until(const char **str, char c)
 	p_str = strchr(*str,c);
 	if (!p_str) 
 		return NULL;
-	else
-	{
+	else {
 		int i;
 		int sl = (int)(p_str - (*str));
 		new_str = (char *)malloc(sl + 1);
@@ -236,19 +239,19 @@ char* pgui_str_dup_until(const char **str, char c)
 		return new_str;
 	}
 }
-static char *i_str_dup_until_no_case(char **str, char sep)
-{
+
+static char * 
+i_str_dup_until_no_case(char **str, char sep) {
 	char *p_str,*new_str;
 	if (!str || str[0]==0)
 		return NULL;
-	p_str=strchr(*str,sep); /* usually the lower case is enough */
+	p_str=strchr(*str,sep); 
 	if (!p_str && (pgui_toupper(sep)!=sep)) 
-		p_str=strchr(*str, pgui_toupper(sep));  /* but check also for upper case */
-	/* if both fail, then abort */
+		p_str=strchr(*str, pgui_toupper(sep));  
+	
 	if (!p_str) 
 		return NULL;
-	else
-	{
+	else {
 		int i;
 		int sl=(int)(p_str - (*str));
 		new_str = (char *) malloc (sl + 1);
@@ -260,23 +263,23 @@ static char *i_str_dup_until_no_case(char **str, char sep)
 		return new_str;
 	}
 }
-char *pgui_str_get_large_mem(int *size)
-{
+
+char *
+pgui_str_get_large_mem(int *size) {
 #define LARGE_MAX_BUFFERS 10
 #define LARGE_SIZE SHRT_MAX
 	static char buffers[LARGE_MAX_BUFFERS][LARGE_SIZE];
 	static int buffers_index = -1;
 	char* ret_str;
-	/* init buffers array */
-	if (buffers_index == -1)
-	{
+	
+	if (buffers_index == -1) {
 		int i;
-		/* clear all memory */
+		
 		for (i=0; i<LARGE_MAX_BUFFERS; i++)
 			memset(buffers[i], 0, sizeof(char)*LARGE_SIZE);
 		buffers_index = 0;
 	}
-	/* DON'T clear memory everytime because the buffer is too large */
+	
 	ret_str = buffers[buffers_index];
 	ret_str[0] = 0;
 	buffers_index++;
@@ -287,23 +290,23 @@ char *pgui_str_get_large_mem(int *size)
 #undef LARGE_MAX_BUFFERS
 #undef LARGE_SIZE 
 }
-static char* pgui_str_get_small_mem(void)
-{
+
+static char * 
+pgui_str_get_small_mem(void) {
 #define SMALL_MAX_BUFFERS 100
-#define SMALL_SIZE 80  /* maximum for pgui_str_return_float and pgui_str_return_double */
+#define SMALL_SIZE 80  
 	static char buffers[SMALL_MAX_BUFFERS][SMALL_SIZE];
 	static int buffers_index = -1;
 	char* ret_str;
-	/* init buffers array */
-	if (buffers_index == -1)
-	{
+	
+	if (buffers_index == -1) {
 		int i;
-		/* clear all memory */
+		
 		for (i = 0; i<SMALL_MAX_BUFFERS; i++)
 			memset(buffers[i], 0, sizeof(char)*SMALL_SIZE);
 		buffers_index = 0;
 	}
-	/* always clear memory before returning a new buffer */
+	
 	memset(buffers[buffers_index], 0, SMALL_SIZE);
 	ret_str = buffers[buffers_index];
 	buffers_index++;
@@ -313,20 +316,18 @@ static char* pgui_str_get_small_mem(void)
 #undef SMALL_MAX_BUFFERS
 #undef SMALL_SIZE 
 }
-char *pgui_str_get_memory(int size)
-{
+
+char *
+pgui_str_get_memory(int size) {
 #define MAX_BUFFERS 50
 	static char* buffers[MAX_BUFFERS];
 	static int buffers_sizes[MAX_BUFFERS];
 	static int buffers_index = -1;
 	int i;
-	if (size == -1) /* Frees memory */
-	{
+	if (size == -1) {
 		buffers_index = -1;
-		for (i = 0; i < MAX_BUFFERS; i++)
-		{
-			if (buffers[i]) 
-			{
+		for (i = 0; i < MAX_BUFFERS; i++) {
+			if (buffers[i]) {
 				free(buffers[i]);
 				buffers[i] = NULL;
 			}
@@ -334,28 +335,24 @@ char *pgui_str_get_memory(int size)
 		}
 		return NULL;
 	}
-	else
-	{
+	else {
 		char* ret_str;
-		/* init buffers array */
-		if (buffers_index == -1)
-		{
+		
+		if (buffers_index == -1) {
 			memset(buffers, 0, sizeof(char*)*MAX_BUFFERS);
 			memset(buffers_sizes, 0, sizeof(int)*MAX_BUFFERS);
 			buffers_index = 0;
 		}
-		/* first alocation */
-		if (!(buffers[buffers_index]))
-		{
+		
+		if (!(buffers[buffers_index])) {
 			buffers_sizes[buffers_index] = size+1;
 			buffers[buffers_index] = (char*)malloc(buffers_sizes[buffers_index]);
 		}
-		else if (buffers_sizes[buffers_index] < size+1)  /* reallocate if necessary */
-		{
+		else if (buffers_sizes[buffers_index] < size+1)  {
 			buffers_sizes[buffers_index] = size+1;
 			buffers[buffers_index] = (char*)realloc(buffers[buffers_index], buffers_sizes[buffers_index]);
 		}
-		/* always clear memory before returning a new buffer */
+		
 		memset(buffers[buffers_index], 0, buffers_sizes[buffers_index]);
 		ret_str = buffers[buffers_index];
 		buffers_index++;
@@ -365,8 +362,9 @@ char *pgui_str_get_memory(int size)
 	}
 #undef MAX_BUFFERS
 }
-char* pgui_str_return_strf(const char* format, ...)
-{
+
+char * 
+pgui_str_return_strf(const char* format, ...) {
 	char* str = pgui_str_get_memory(1024);
 	va_list arglist;
 	va_start(arglist, format);
@@ -374,10 +372,10 @@ char* pgui_str_return_strf(const char* format, ...)
 	va_end(arglist);
 	return str;
 }
-char* pgui_str_return_str(const char* str)
-{
-	if (str)
-	{
+
+char * 
+pgui_str_return_str(const char* str) {
+	if (str) {
 		int size = (int)strlen(str)+1;
 		char* ret_str = pgui_str_get_memory(size);
 		memcpy(ret_str, str, size);
@@ -386,15 +384,17 @@ char* pgui_str_return_str(const char* str)
 	else
 		return NULL;
 }
-char* pgui_str_return_boolean(int b)
-{
+
+char * 
+pgui_str_return_boolean(int b) {
 	if (b)
 		return "YES";
 	else
 		return "NO";
 }
-char* pgui_str_return_checked(int check)
-{
+
+char * 
+pgui_str_return_checked(int check) {
 	if (check == -1)
 		return "NOTDEF";
 	else if (check)
@@ -402,46 +402,52 @@ char* pgui_str_return_checked(int check)
 	else
 		return "OFF";
 }
-char* pgui_str_return_uInt(unsigned int i)
-{
-	char* str = pgui_str_get_small_mem();  /* 20 */
+
+char * 
+pgui_str_return_uInt(unsigned int i) {
+	char* str = pgui_str_get_small_mem();  
 	sprintf(str, "%u", i);
 	return str;
 }
-char* pgui_str_return_int(int i)
-{
-	char* str = pgui_str_get_small_mem();  /* 20 */
+
+char * 
+pgui_str_return_int(int i) {
+	char* str = pgui_str_get_small_mem();  
 	sprintf(str, "%d", i);
 	return str;
 }
-char* pgui_str_return_float(float f)
-{
-	char* str = pgui_str_get_small_mem();  /* 80 */
+
+char * 
+pgui_str_return_float(float f) {
+	char* str = pgui_str_get_small_mem();  
 	sprintf(str, PGUI_FLOAT2_STR, f);
 	return str;
 }
-char* pgui_str_return_double(double d)
-{
-	char* str = pgui_str_get_small_mem();  /* 80 */
+
+char * 
+pgui_str_return_double(double d) {
+	char* str = pgui_str_get_small_mem();  
 	sprintf(str, PGUI_DOUBLE2_STR, d);
 	return str;
 }
-char* pgui_str_return_rGB(unsigned char r, unsigned char g, unsigned char b)
-{
-	char* str = pgui_str_get_small_mem();  /* 3*20 */
+
+char *
+pgui_str_return_rGB(unsigned char r, unsigned char g, unsigned char b) {
+	char* str = pgui_str_get_small_mem();  
 	sprintf(str, "%d %d %d", (int)r, (int)g, (int)b);
 	return str;
 }
-char* pgui_str_return_rGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-{
-	char* str = pgui_str_get_small_mem();  /* 4*20 */
+
+char * 
+pgui_str_return_rGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
+	char* str = pgui_str_get_small_mem();  
 	sprintf(str, "%d %d %d %d", (int)r, (int)g, (int)b, (int)a);
 	return str;
 }
-char* pgui_str_return_str_str(const char *str1, const char *str2, char sep)
-{
-	if (str1 || str2)
-	{
+
+char * 
+pgui_str_return_str_str(const char *str1, const char *str2, char sep) {
+	if (str1 || str2) {
 		char* ret_str;
 		int size1=0, size2=0;
 		if (str1) size1 = (int)strlen(str1);
@@ -456,17 +462,18 @@ char* pgui_str_return_str_str(const char *str1, const char *str2, char sep)
 	else
 		return NULL;
 }
-char* pgui_str_return_int_int(int i1, int i2, char sep)
-{
-	char* str = pgui_str_get_small_mem();  /* 2*20 */
+
+char * 
+pgui_str_return_int_int(int i1, int i2, char sep) {
+	char* str = pgui_str_get_small_mem();  
 	sprintf(str, "%d%c%d", i1, sep, i2);
 	return str;
 }
-int pgui_str_get_format_precision(const char* format)
-{
+
+int 
+pgui_str_get_format_precision(const char* format) {
 	int precision;
-	while (*format)
-	{
+	while (*format) {
 		if (*format == '.')
 			break;
 		format++;
@@ -478,17 +485,16 @@ int pgui_str_get_format_precision(const char* format)
 		return precision;
 	return -1;
 }
-int pgui_str_to_rGB(const char *str, unsigned char *r, unsigned char *g, unsigned char *b)
-{
+
+int 
+pgui_str_to_rGB(const char *str, unsigned char *r, unsigned char *g, unsigned char *b) {
 	unsigned int ri = 0, gi = 0, bi = 0;
 	if (!str) return 0;
-	if (str[0]=='#')
-	{
+	if (str[0]=='#') {
 		str++;
 		if (sscanf(str, "%2X%2X%2X", &ri, &gi, &bi) != 3) return 0;
 	}
-	else
-	{
+	else {
 		if (sscanf(str, "%u %u %u", &ri, &gi, &bi) != 3) return 0;
 	}
 	if (ri > 255 || gi > 255 || bi > 255) return 0;
@@ -497,17 +503,16 @@ int pgui_str_to_rGB(const char *str, unsigned char *r, unsigned char *g, unsigne
 	*b = (unsigned char)bi;
 	return 1;
 }
-int pgui_str_to_rGBA(const char *str, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a)
-{
+
+int 
+pgui_str_to_rGBA(const char *str, unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a) {
 	unsigned int ri = 0, gi = 0, bi = 0, ai = 255;
 	if (!str) return 0;
-	if (str[0] == '#')
-	{
+	if (str[0] == '#') {
 		str++;
 		if (sscanf(str, "%2X%2X%2X%2X", &ri, &gi, &bi, &ai) < 3) return 0;
 	}
-	else
-	{
+	else {
 		if (sscanf(str, "%u %u %u %u", &ri, &gi, &bi, &ai) < 3) return 0;
 	}
 	if (ri > 255 || gi > 255 || bi > 255 || ai > 255) return 0;
@@ -517,46 +522,43 @@ int pgui_str_to_rGBA(const char *str, unsigned char *r, unsigned char *g, unsign
 	*a = (unsigned char)ai;
 	return 1;
 }
-/* TODO: are strtod/atof and strtol/atoi faster/better than sscanf? 
-   must handle the 0 return value. */
-int pgui_str_to_int(const char *str, int *i)
-{
+
+
+int 
+pgui_str_to_int(const char *str, int *i) {
 	if (!str) return 0;
 	if (sscanf(str, "%d", i) != 1) return 0;
 	return 1;
 }
-int pgui_str_to_uInt(const char *str, unsigned int *i)
-{
+
+int 
+pgui_str_to_uInt(const char *str, unsigned int *i) {
 	if (!str) return 0;
 	if (sscanf(str, "%u", i) != 1) return 0;
 	return 1;
 }
-int pgui_str_to_int_int(const char *str, int *i1, int *i2, char sep)
-{
+
+int 
+pgui_str_to_int_int(const char *str, int *i1, int *i2, char sep) {
 	if (!str) return 0;
-	if (pgui_tolower(*str) == sep) /* no first value */
-	{
-		str++; /* skip separator */
+	if (pgui_tolower(*str) == sep) {
+		str++; 
 		if (sscanf(str, "%d", i2) != 1) return 0;
 		return 1;
 	}
-	else 
-	{
+	else {
 		char* p_str = i_str_dup_until_no_case((char**)&str, sep);
-		if (!p_str)   /* no separator means no second value */
-		{        
+		if (!p_str)   {        
 			if (sscanf(str, "%d", i1) != 1) return 0;
 			return 1;
 		}
-		else if (*str==0)  /* separator exists, but second value empty, also means no second value */
-		{        
+		else if (*str==0)  {        
 			int ret = sscanf(p_str, "%d", i1);
 			free(p_str);
 			if (ret != 1) return 0;
 			return 1;
 		}
-		else
-		{
+		else {
 			int ret = 0;
 			if (sscanf(p_str, "%d", i1) == 1) ret++;
 			if (sscanf(str, "%d", i2) == 1) ret++;
@@ -565,56 +567,56 @@ int pgui_str_to_int_int(const char *str, int *i1, int *i2, char sep)
 		}
 	}
 }
-int pgui_str_to_float_def(const char *str, float *f, float def)
-{
+
+int 
+pgui_str_to_float_def(const char *str, float *f, float def) {
 	if (!str) { *f = def;  return 1; }
 	if (sscanf(str, "%f", f) != 1) return 0;
 	return 1;
 }
-int pgui_str_to_float(const char *str, float *f)
-{
+
+int 
+pgui_str_to_float(const char *str, float *f) {
 	if (!str) return 0;
 	if (sscanf(str, "%f", f) != 1) return 0;
 	return 1;
 }
-int pgui_str_to_double(const char *str, double *d)
-{
+
+int 
+pgui_str_to_double(const char *str, double *d) {
 	if (!str) return 0;
 	if (sscanf(str, "%lf", d) != 1) return 0;
 	return 1;
 }
-int pgui_str_to_double_def(const char *str, double *d, double def)
-{
+
+int 
+pgui_str_to_double_def(const char *str, double *d, double def) {
 	if (!str) { *d = def;  return 1; }
 	if (sscanf(str, "%lf", d) != 1) return 0;
 	return 1;
 }
-int pgui_str_to_float_float(const char *str, float *f1, float *f2, char sep)
-{
+
+int 
+pgui_str_to_float_float(const char *str, float *f1, float *f2, char sep) {
 	if (!str) return 0;
-	if (pgui_tolower(*str) == sep) /* no first value */
-	{
-		str++; /* skip separator */
+	if (pgui_tolower(*str) == sep) {
+		str++; 
 		if (sscanf(str, "%f", f2) != 1) return 0;
 		return 1;
 	}
-	else 
-	{
+	else {
 		char* p_str = i_str_dup_until_no_case((char**)&str, sep);
-		if (!p_str)   /* no separator means no second value */
-		{        
+		if (!p_str)   {        
 			if (sscanf(str, "%f", f1) != 1) return 0;
 			return 1;
 		}
-		else if (*str==0)    /* separator exists, but second value empty, also means no second value */
-		{        
+		else if (*str==0)    {        
 			int ret = sscanf(p_str, "%f", f1);
 			free(p_str);
 			if (ret != 1) return 0;
 			return 1;
 		}
-		else
-		{
+		else {
 			int ret = 0;
 			if (sscanf(p_str, "%f", f1) == 1) ret++;
 			if (sscanf(str, "%f", f2) == 1) ret++;
@@ -623,32 +625,28 @@ int pgui_str_to_float_float(const char *str, float *f1, float *f2, char sep)
 		}
 	}
 }
-int pgui_str_to_double_double(const char *str, double *f1, double *f2, char sep)
-{
+
+int 
+pgui_str_to_double_double(const char *str, double *f1, double *f2, char sep) {
 	if (!str) return 0;
-	if (pgui_tolower(*str) == sep) /* no first value */
-	{
-		str++; /* skip separator */
+	if (pgui_tolower(*str) == sep) {
+		str++; 
 		if (sscanf(str, "%lf", f2) != 1) return 0;
 		return 1;
 	}
-	else
-	{
+	else {
 		char* p_str = i_str_dup_until_no_case((char**)&str, sep);
-		if (!p_str)   /* no separator means no second value */
-		{
+		if (!p_str)   {
 			if (sscanf(str, "%lf", f1) != 1) return 0;
 			return 1;
 		}
-		else if (*str == 0)    /* separator exists, but second value empty, also means no second value */
-		{
+		else if (*str == 0)    {
 			int ret = sscanf(p_str, "%lf", f1);
 			free(p_str);
 			if (ret != 1) return 0;
 			return 1;
 		}
-		else
-		{
+		else {
 			int ret = 0;
 			if (sscanf(p_str, "%lf", f1) == 1) ret++;
 			if (sscanf(str, "%lf", f2) == 1) ret++;
@@ -657,34 +655,30 @@ int pgui_str_to_double_double(const char *str, double *f1, double *f2, char sep)
 		}
 	}
 }
-int pgui_str_to_str_str(const char *str, char *str1, char *str2, char sep)
-{
+
+int 
+pgui_str_to_str_str(const char *str, char *str1, char *str2, char sep) {
 	str1[0] = 0;
 	str2[0] = 0;
 	if (!str)
 		return 0;
-	if (pgui_tolower(*str) == sep) /* starts with separator, no first value */
-	{
-		str++; /* skip separator */
+	if (pgui_tolower(*str) == sep) {
+		str++; 
 		strcpy(str2, str);
 		return 1;
 	}
-	else 
-	{
+	else {
 		char* p_str = i_str_dup_until_no_case((char**)&str, sep);
-		if (!p_str)   /* no separator means no second value */
-		{        
+		if (!p_str)   {        
 			strcpy(str1, str);
 			return 1;
 		}
-		else if (*str==0)    /* separator exists, but no second value */
-		{        
+		else if (*str==0)    {        
 			strcpy(str1, p_str);
 			free(p_str);
 			return 1;
 		}
-		else
-		{
+		else {
 			strcpy(str1, p_str);
 			strcpy(str2, str);
 			free(p_str);
@@ -692,26 +686,23 @@ int pgui_str_to_str_str(const char *str, char *str1, char *str2, char sep)
 		}
 	}
 }
-char* pgui_str_file_get_path(const char *file_name)
-{
+
+char * 
+pgui_str_file_get_path(const char *file_name) {
 	if (!file_name)
 		return NULL;
-	else
-	{
-		/* Starts at the last character */
+	else {
+		
 		int len = (int)strlen(file_name) - 1;
-		while (len != 0)
-		{
-			if (file_name[len] == '\\' || file_name[len] == '/')
-			{
+		while (len != 0) {
+			if (file_name[len] == '\\' || file_name[len] == '/') {
 				len++;
 				break;
 			}
 			len--;
 		}
 		if (len == 0)
-			return NULL;
-		{
+			return NULL; {
 			char* path = malloc(len + 1);
 			memcpy(path, file_name, len);
 			path[len] = 0;
@@ -719,19 +710,17 @@ char* pgui_str_file_get_path(const char *file_name)
 		}
 	}
 }
-char* pgui_str_file_get_title(const char *file_name)
-{
+
+char * 
+pgui_str_file_get_title(const char *file_name) {
 	if (!file_name)
 		return NULL;
-	else
-	{
-		/* Starts at the last character */
+	else {
+		
 		int len = (int)strlen(file_name);
 		int offset = len - 1;
-		while (offset != 0)
-		{
-			if (file_name[offset] == '\\' || file_name[offset] == '/')
-			{
+		while (offset != 0) {
+			if (file_name[offset] == '\\' || file_name[offset] == '/') {
 				offset++;
 				break;
 			}
@@ -745,29 +734,27 @@ char* pgui_str_file_get_title(const char *file_name)
 		}
 	}
 }
-char* pgui_str_file_get_ext(const char *file_name)
-{
+
+char * 
+pgui_str_file_get_ext(const char *file_name) {
 	if (!file_name)
 		return NULL;
-	else
-	{
-		/* Starts at the last character */
+	else {
+		
 		int len = (int)strlen(file_name);
 		int offset = len - 1;
-		while (offset != 0)
-		{
-			/* if found a path separator stop. */
+		while (offset != 0) {
+			
 			if (file_name[offset] == '\\' || file_name[offset] == '/')
 				return NULL;
-			if (file_name[offset] == '.')
-			{
+			if (file_name[offset] == '.') {
 				offset++;
 				break;
 			}
 			offset--;
 		}
 		if (offset == 0)
-			return NULL;
+			return NULL; 
 		{
 			int ext_size = len - offset + 1;
 			char* file_ext = (char*)malloc(ext_size);
@@ -776,18 +763,17 @@ char* pgui_str_file_get_ext(const char *file_name)
 		}
 	}
 }
-char* pgui_str_file_make_file_name(const char* path, const char* title)
-{
+
+char * 
+pgui_str_file_make_file_name(const char* path, const char* title) {
 	if (!path || !title)
 		return NULL;
-	else
-	{
+	else {
 		int size_path = (int)strlen(path);
 		int size_title = (int)strlen(title);
 		char *file_name = malloc(size_path + size_title + 2);
 		memcpy(file_name, path, size_path);
-		if (path[size_path - 1] != '/')
-		{
+		if (path[size_path - 1] != '/') {
 			file_name[size_path] = '/';
 			size_path++;
 		}
@@ -796,24 +782,20 @@ char* pgui_str_file_make_file_name(const char* path, const char* title)
 		return file_name;
 	}
 }
-void pgui_str_file_name_split(const char* file_name, char *path, char *title)
-{
+
+void pgui_str_file_name_split(const char* file_name, char *path, char *title) {
 	int i, n;
 	if (!file_name)
 		return;
-	/* Look for last folder separator and split title from path */
+	
 	n = (int)strlen(file_name);
-	for (i = n - 1; i >= 0; i--)
-	{
-		if (file_name[i] == '\\' || file_name[i] == '/') 
-		{
-			if (path)
-			{
+	for (i = n - 1; i >= 0; i--) {
+		if (file_name[i] == '\\' || file_name[i] == '/') {
+			if (path) {
 				strncpy(path, file_name, i+1);
 				path[i+1] = 0;
 			}
-			if (title)
-			{
+			if (title) {
 				strcpy(title, file_name+i+1);
 				title[n-i] = 0;
 			}
@@ -821,15 +803,14 @@ void pgui_str_file_name_split(const char* file_name, char *path, char *title)
 		}
 	}
 }
-int pgui_str_replace(char* str, char src, char dst)
-{
+
+int 
+pgui_str_replace(char* str, char src, char dst) {
 	int i = 0;
 	if (!str)
 		return 0;
-	while (*str)
-	{
-		if (*str == src)
-		{
+	while (*str) {
+		if (*str == src) {
 			*str = dst;
 			i++;
 		}
@@ -837,15 +818,13 @@ int pgui_str_replace(char* str, char src, char dst)
 	}
 	return i;
 }
-void pgui_str_to_unix(char* str)
-{
+
+void pgui_str_to_unix(char* str) {
 	char* pstr = str;
 	if (!str) return;
-	while (*str)
-	{
-		if (*str == '\r')
-		{
-			if (*(str+1) != '\n')  /* MAC line end */
+	while (*str) {
+		if (*str == '\r') {
+			if (*(str+1) != '\n')  
 				*pstr++ = '\n';
 			str++;
 		}
@@ -854,20 +833,17 @@ void pgui_str_to_unix(char* str)
 	}
 	*pstr = *str;
 }
-void pgui_str_to_mac(char* str)
-{
+
+void pgui_str_to_mac(char* str) {
 	char* pstr = str;
 	if (!str) return;
-	while (*str)
-	{
-		if (*str == '\r')
-		{
-			if (*(++str) == '\n')  /* DOS line end */
+	while (*str) {
+		if (*str == '\r') {
+			if (*(++str) == '\n')  
 				str++;
 			*pstr++ = '\r';
 		}
-		else if (*str == '\n')  /* UNIX line end */
-		{
+		else if (*str == '\n')  {
 			str++;
 			*pstr++ = '\r';
 		}
@@ -876,8 +852,9 @@ void pgui_str_to_mac(char* str)
 	}
 	*pstr = *str;
 }
-char* pgui_str_to_dos(const char* str)
-{
+
+char * 
+pgui_str_to_dos(const char* str) {
 	char *auxstr, *newstr;
 	int num_lin;
 	if (!str) return NULL;
@@ -886,20 +863,16 @@ char* pgui_str_to_dos(const char* str)
 		return (char*)str;
 	newstr = malloc(num_lin + strlen(str) + 1);
 	auxstr = newstr;
-	while(*str)
-	{
-		if (*str == '\r' && *(str+1)=='\n')  /* DOS line end */
-		{
+	while(*str) {
+		if (*str == '\r' && *(str+1)=='\n')  {
 			*auxstr++ = *str++;
 			*auxstr++ = *str++;
 		}
-		else if (*str == '\r')   /* MAC line end */
-		{
+		else if (*str == '\r')   {
 			*auxstr++ = *str++;
 			*auxstr++ = '\n';
 		}
-		else if (*str == '\n')  /* UNIX line end */
-		{
+		else if (*str == '\n')  {
 			*auxstr++ = '\r';
 			*auxstr++ = *str++;
 		}
@@ -909,16 +882,16 @@ char* pgui_str_to_dos(const char* str)
 	*auxstr = 0;
 	return newstr;	
 }
+
 #define PGUI_ISRESERVED(_c) (_c=='\n' || _c=='\r' || _c=='\t')
-char* pgui_str_convert_to_c(const char* str)
-{
+char * 
+pgui_str_convert_to_c(const char* str) {
 	char* new_str, *pnstr;
 	const char* pstr = str;
 	int len, count=0;
 	if (!str)
 		return NULL;
-	while(*pstr)
-	{
+	while(*pstr) {
 		if (PGUI_ISRESERVED(*pstr))
 			count++;
 		pstr++;
@@ -929,14 +902,11 @@ char* pgui_str_convert_to_c(const char* str)
 	new_str = malloc(len+count+1);
 	pstr = str;
 	pnstr = new_str;
-	while(*pstr)
-	{
-		if (PGUI_ISRESERVED(*pstr))
-		{
+	while(*pstr) {
+		if (PGUI_ISRESERVED(*pstr)) {
 			*pnstr = '\\';
 			pnstr++;
-			switch(*pstr)
-			{
+			switch(*pstr) {
 				case '\n':
 					*pnstr = 'n';
 					break;
@@ -956,8 +926,9 @@ char* pgui_str_convert_to_c(const char* str)
 	*pnstr = 0;
 	return new_str;
 }
-char* pgui_str_process_mnemonic(const char* str, char *c, int action)
-{
+
+char * 
+pgui_str_process_mnemonic(const char* str, char *c, int action) {
 	int i = 0, found = 0;
 	char* new_str, *orig_str = (char*)str;
 	if (!str) 
@@ -965,60 +936,51 @@ char* pgui_str_process_mnemonic(const char* str, char *c, int action)
 	if (!strchr(str, '&'))
 		return (char*)str;
 	new_str = malloc(strlen(str)+1);
-	while (*str)
-	{
-		if (*str == '&')
-		{
-			if (*(str+1) == '&') /* remove & from the string, add next & to the string */
-			{
+	while (*str) {
+		if (*str == '&') {
+			if (*(str+1) == '&') {
 				found = -1;
 				str++;
 				new_str[i++] = *str;
 			}
-			else if (found!=1) /* mnemonic found */
-			{
+			else if (found!=1) {
 				found = 1;
-				if (action == 1) /* replace & by c */
+				if (action == 1) 
 					new_str[i++] = *c;
-				else if (action == -1)  /* remove & and return in c */
-					*c = *(str+1);  /* next is mnemonic */
-				/* else -- only remove & */
+				else if (action == -1)  
+					*c = *(str+1);  
+				
 			}
 		}
-		else
-		{
+		else {
 			new_str[i++] = *str;
 		}
 		str++;
 	}
 	new_str[i] = 0;
-	if (found==0)
-	{
+	if (found==0) {
 		free(new_str);
 		return orig_str;
 	}
 	return new_str;
 }
-int pgui_str_find_mnemonic(const char* str)
-{
+
+int 
+pgui_str_find_mnemonic(const char* str) {
 	int c = 0, found = 0;
 	if (!str) 
 		return 0;
 	if (!strchr(str, '&'))
 		return 0;
-	while (*str)
-	{
-		if (*str == '&')
-		{
-			if (*(str+1) == '&')
-			{
+	while (*str) {
+		if (*str == '&') {
+			if (*(str+1) == '&') {
 				found = -1;
 				str++;
 			}
-			else if (found!=1) /* mnemonic found */
-			{
+			else if (found!=1) {
 				found = 1;
-				c = *(str+1);  /* next is mnemonic */
+				c = *(str+1);  
 			}
 		}
 		str++;
@@ -1028,16 +990,16 @@ int pgui_str_find_mnemonic(const char* str)
 	else
 		return c;
 }
+
 static unsigned char* Latin1_map = NULL;
 static unsigned char* Latin1_map_nocase = NULL;
-static void i_str_init_latin1_map(void)
-{
+static void i_str_init_latin1_map(void) {
 	static unsigned char map[256];
 	static unsigned char map_nocase[256];
 	Latin1_map = map;
 	Latin1_map_nocase = map_nocase;
 #define mm(_x) (map[(unsigned char)_x])
-	/* these characters are sorted in the same order as Excel would sort them */
+	
 	mm(  0)=  0;  mm(  1)=  1; mm(  2)=  2; mm(  3)=  3; mm(  4)=  4; mm(  5)=  5; mm(  6)=  6; mm(  7)=  7;  mm(  8)=  8; mm(  9)=  9; mm( 10)= 10; mm( 11)= 11; mm( 12)= 12; mm( 13)= 13; mm( 14)= 14; mm( 15)= 15; 
 	mm( 16)= 16;  mm( 17)= 17; mm( 18)= 18; mm( 19)= 19; mm( 20)= 20; mm( 21)= 21; mm( 22)= 22; mm( 23)= 23;  mm( 24)= 24; mm( 25)= 25; mm( 26)= 26; mm( 27)= 27; mm( 28)= 28; mm( 29)= 29; mm( 30)= 30; mm( 31)= 31; 
 	mm('\'')= 32; mm('-')= 33; mm('–')= 34; mm('—')= 35; mm(' ')= 36; mm('!')= 37; mm('"')= 38; mm('#')= 39;  mm('$')= 40; mm('%')= 41; mm('&')= 42; mm('(')= 43; mm(')')= 44; mm('*')= 45; mm(',')= 46; mm('.')= 47; 
@@ -1056,7 +1018,7 @@ static void i_str_init_latin1_map(void)
 	mm('Ý')=240;  mm('ÿ')=241; mm('Ÿ')=242; mm('z')=243; mm('Z')=244; mm('ž')=245; mm('Ž')=246; mm('\\')=247; mm(127)=248; mm(129)=249; mm(141)=250; mm(143)=251; mm(144)=252; mm(157)=253; mm(160)=254; mm(173)=255; 
 #undef mm
 #define mm(_x) (map_nocase[(unsigned char)_x])
-	/* here case differences use the same code */
+	
 	mm(  0)=  0;  mm(  1)=  1; mm(  2)=  2; mm(  3)=  3; mm(  4)=  4; mm(  5)=  5; mm(  6)=  6; mm(  7)=  7;  mm(  8)=  8; mm(  9)=  9; mm( 10)= 10; mm( 11)= 11; mm( 12)= 12; mm( 13)= 13; mm( 14)= 14; mm( 15)= 15; 
 	mm( 16)= 16;  mm( 17)= 17; mm( 18)= 18; mm( 19)= 19; mm( 20)= 20; mm( 21)= 21; mm( 22)= 22; mm( 23)= 23;  mm( 24)= 24; mm( 25)= 25; mm( 26)= 26; mm( 27)= 27; mm( 28)= 28; mm( 29)= 29; mm( 30)= 30; mm( 31)= 31; 
 	mm('\'')= 32; mm('-')= 33; mm('–')= 34; mm('—')= 35; mm(' ')= 36; mm('!')= 37; mm('"')= 38; mm('#')= 39;  mm('$')= 40; mm('%')= 41; mm('&')= 42; mm('(')= 43; mm(')')= 44; mm('*')= 45; mm(',')= 46; mm('.')= 47; 
@@ -1075,30 +1037,31 @@ static void i_str_init_latin1_map(void)
 	mm('Ý')=239;  mm('ÿ')=241; mm('Ÿ')=241; mm('z')=243; mm('Z')=243; mm('ž')=245; mm('Ž')=245; mm('\\')=247; mm(127)=248; mm(129)=249; mm(141)=250; mm(143)=251; mm(144)=252; mm(157)=253; mm(160)=254; mm(173)=255; 
 #undef mm
 }
-static char i_str_uTF8to_latin1(const char* *l)
-{
+
+static char 
+i_str_uTF8to_latin1(const char* *l) {
 	char c = **l;
 	if (c >= 0) 
-		return c;   /* ASCII */
-	if ((c & 0x20) == 0)       /* Use 00100000 to detect 110XXXXX */
-	{
+		return c;   
+	if ((c & 0x20) == 0)       {
 		short u;
-		u  = (c & 0x1F) << 6;    /* first part + make room for second part */
+		u  = (c & 0x1F) << 6;    
 		(*l)++;
 		c = **l;
-		u |= (c & 0x3F);         /* second part (10XXXXXX) */
+		u |= (c & 0x3F);         
 		if (u >= -128 && u < 128)
 			return (char)u;
 		else
 			return 0;
 	}
-	/* only increment the pointer for the remaining codes */
-	if ((c & 0x10) == 0)       /* Use 00010000 to detect 1110XXXX */
+	
+	if ((c & 0x10) == 0)       
 		*l += 3-1;  
-	else if ((c & 0x08) == 0)  /* Use 00001000 to detect 11110XXX */
+	else if ((c & 0x08) == 0)  
 		*l += 4-1;
 	return 0;
 }
+
 /*
    The Alphanum Algorithm is an improved sorting algorithm for strings
    containing numbers.  Instead of sorting numbers in ASCII order like a
@@ -1127,8 +1090,8 @@ static char i_str_uTF8to_latin1(const char* *l)
  downloaded from the Dave Koelle page and implemented by Dirk Jagdmann.
  It was modified to the C language and simplified to PGUI needs.
  */
-int pgui_str_compare(const char *l, const char *r, int casesensitive, int utf8)
-{
+int 
+pgui_str_compare(const char *l, const char *r, int casesensitive, int utf8) {
 	enum mode_t { STRING, NUMBER } mode=STRING;
 	if (l == r)
 		return 0;
@@ -1138,70 +1101,62 @@ int pgui_str_compare(const char *l, const char *r, int casesensitive, int utf8)
 		return 1;
 	if (!Latin1_map)
 		i_str_init_latin1_map();
-	while(*l && *r)
-	{
-		if (mode == STRING)
-		{
-			while((*l) && (*r))
-			{
+	while(*l && *r) {
+		if (mode == STRING) {
+			while((*l) && (*r)) {
 				int diff;
 				char l_char = *l, 
 					 r_char = *r;
-				/* check if this are digit characters */
+				
 				int l_digit = pgui_isdigit(l_char), 
 					r_digit = pgui_isdigit(r_char);
-				/* if both characters are digits, we continue in NUMBER mode */
-				if(l_digit && r_digit)
-				{
+				
+				if(l_digit && r_digit) {
 					mode = NUMBER;
 					break;
 				}
-				/* if only the left character is a digit, we have a result */
+				
 				if(l_digit) return -1;
-				/* if only the right character is a digit, we have a result */
+				
 				if(r_digit) return +1;
-				if (utf8)
-				{
-					l_char = i_str_uTF8to_latin1(&l);  /* increment n-1 an utf8 character */
+				if (utf8) {
+					l_char = i_str_uTF8to_latin1(&l);  
 					r_char = i_str_uTF8to_latin1(&r);
 				}
-				/* compute the difference of both characters */
+				
 				if (casesensitive)
 					diff = Latin1_map[(unsigned char)l_char] - Latin1_map[(unsigned char)r_char];
 				else
 					diff = Latin1_map_nocase[(unsigned char)l_char] - Latin1_map_nocase[(unsigned char)r_char];
-				/* if they differ we have a result */
+				
 				if(diff != 0) return diff;
-				/* otherwise process the next characters */
+				
 				++l;
 				++r;
 			}
 		}
-		else /* mode==NUMBER */
-		{
+		else {
 			unsigned long r_int;
 			long diff;
-			/* get the left number */
+			
 			unsigned long l_int=0;
-			while(*l && pgui_isdigit(*l))
-			{
-				/* TODO: this can overflow */
+			while(*l && pgui_isdigit(*l)) {
+				
 				l_int = l_int*10 + *l-'0';
 				++l;
 			}
-			/* get the right number */
+
 			r_int=0;
-			while(*r && pgui_isdigit(*r))
-			{
-				/* TODO: this can overflow */
+			while(*r && pgui_isdigit(*r)) {
+				
 				r_int = r_int*10 + *r-'0';
 				++r;
 			}
-			/* if the difference is not equal to zero, we have a comparison result */
+			
 			diff = l_int-r_int;
 			if (diff != 0)
 				return (int)diff;
-			/* otherwise we process the next substring in STRING mode */
+			
 			mode=STRING;
 		}
 	}
@@ -1209,55 +1164,56 @@ int pgui_str_compare(const char *l, const char *r, int casesensitive, int utf8)
 	if (*l) return +1;
 	return 0;
 }
-int pgui_str_compare_equal(const char *l, const char *r, int casesensitive, int utf8, int partial)
-{
+
+int 
+pgui_str_compare_equal(const char *l, const char *r, int casesensitive, int utf8, int partial) {
 	if (!l || !r)
 		return 0;
 	if (!Latin1_map)
 		i_str_init_latin1_map();
-	while(*l && *r)
-	{
+	while(*l && *r) {
 		int diff;
 		char l_char = *l, 
 			 r_char = *r;
-		if (utf8)
-		{
-			l_char = i_str_uTF8to_latin1(&l);  /* increment n-1 an utf8 character */
+		if (utf8) {
+			l_char = i_str_uTF8to_latin1(&l);  
 			r_char = i_str_uTF8to_latin1(&r);
 		}
-		/* compute the difference of both characters */
+		
 		if (casesensitive)
 			diff = l_char - r_char;
 		else
 			diff = Latin1_map_nocase[(unsigned char)l_char] - Latin1_map_nocase[(unsigned char)r_char];
-		/* if they differ we have a result */
+		
 		if(diff != 0) 
 			return 0;
-		/* otherwise process the next characters */
+		
 		++l;
 		++r;
 	}
-	/* check also for terminator */
+	
 	if (*l == *r) 
 		return 1;
 	if (partial && *r == 0) 
-		return 1;  /* if second string is at terminator, then it is partially equal */
+		return 1;  
 	return 0;
 }
-static int i_str_inc_uTF8(const char* str)
-{
-	if (*str >= 0)      /* ASCII */
+
+static int 
+i_str_inc_uTF8(const char* str) {
+	if (*str >= 0)     
 		return 1;  
-	else if ((*str & 0x20) == 0)  /* Use 00100000 to detect 110XXXXX */
+	else if ((*str & 0x20) == 0)  
 		return 2;  
-	else if ((*str & 0x10) == 0)  /* Use 00010000 to detect 1110XXXX */
+	else if ((*str & 0x10) == 0)  
 		return 3;  
-	else if ((*str & 0x08) == 0)  /* Use 00001000 to detect 11110XXX */
+	else if ((*str & 0x08) == 0)  
 		return 4;
 	return 1;
 }
-int pgui_str_compare_find(const char *l, const char *r, int casesensitive, int utf8)
-{
+
+int 
+pgui_str_compare_find(const char *l, const char *r, int casesensitive, int utf8) {
 	int i, inc, l_len, r_len, count;
 	if (!l || !r)
 		return 0;
@@ -1267,12 +1223,10 @@ int pgui_str_compare_find(const char *l, const char *r, int casesensitive, int u
 	if (count < 0)
 		return 0;
 	count++;
-	for (i=0; i<count; i++)
-	{
+	for (i=0; i<count; i++) {
 		if (pgui_str_compare_equal(l, r, casesensitive, utf8, 1))
 			return 1;
-		if (utf8)
-		{
+		if (utf8) {
 			inc = i_str_inc_uTF8(l);
 			l += inc;
 			i += inc-1;
@@ -1282,18 +1236,16 @@ int pgui_str_compare_find(const char *l, const char *r, int casesensitive, int u
 	}
 	return 0;
 }
-static void i_str_fix_pos_uTF8(const char* str, int *start, int *end)
-{
+
+static void 
+i_str_fix_pos_uTF8(const char* str, int *start, int *end) {
 	int p = 0, i = 0, find = 0, inc;
-	while (*(str + i))
-	{
-		if (find == 0 && p == *start)
-		{
+	while (*(str + i)) {
+		if (find == 0 && p == *start) {
 			*start = i;
 			find = 1;
 		}
-		if (find == 1 && p == *end)
-		{
+		if (find == 1 && p == *end) {
 			*end = i;
 			return;
 		}
@@ -1301,26 +1253,24 @@ static void i_str_fix_pos_uTF8(const char* str, int *start, int *end)
 		i += inc;
 		p++;
 	}
-	if (find == 0 && p == *start)
-	{
+	if (find == 0 && p == *start) {
 		*start = i;
 		find = 1;
 	}
 	if (find == 1 && p == *end)
 		*end = i;
 }
-void pgui_str_remove(char* str, int start, int end, int dir, int utf8)
-{
+
+void 
+pgui_str_remove(char* str, int start, int end, int dir, int utf8) {
 	int len;
 	if (end < start || !str || str[0] == 0)
 		return;
-	if (start == end)
-	{
-		if (dir == 1)  /* (forward) */
+	if (start == end) {
+		if (dir == 1)  
 			end++;
-		else  /* dir==-1 (backward) */
-		{
-			if (start == 0) /* there is nothing to remove before */
+		else  {
+			if (start == 0) 
 				return;
 			else
 				start--;
@@ -1328,14 +1278,14 @@ void pgui_str_remove(char* str, int start, int end, int dir, int utf8)
 	}
 	if (utf8)
 		i_str_fix_pos_uTF8(str, &start, &end);
-	/* from "start" remove up to "end", but not including "end" */
-	len = (int)strlen(str);
-	if (start >= len) { start = len - 1; end = len; }
+	
+	len = (int)strlen(str); if (start >= len) { start = len - 1; end = len; }
 	if (end > len) end = len;
 	memmove(str + start, str + end, len - end + 1);
 }
-char* pgui_str_insert(const char* str, const char* insert_str, int start, int end, int utf8)
-{
+
+char * 
+pgui_str_insert(const char* str, const char* insert_str, int start, int end, int utf8) {
 	char* new_str = (char*)str;
 	int insert_len, len;
 	if (!str || !insert_str)
@@ -1344,26 +1294,24 @@ char* pgui_str_insert(const char* str, const char* insert_str, int start, int en
 	len = (int)strlen(str);
 	if (utf8)
 		i_str_fix_pos_uTF8(str, &start, &end);
-	if (end == start || insert_len > end - start)
-	{
+	if (end == start || insert_len > end - start) {
 		new_str = malloc(len - (end - start) + insert_len + 1);
 		memcpy(new_str, str, start);
 		memcpy(new_str + start, insert_str, insert_len);
 		memcpy(new_str + start + insert_len, str + end, len - end + 1);
 	}
-	else
-	{
+	else {
 		memcpy(new_str + start, insert_str, insert_len);
 		memcpy(new_str + start + insert_len, str + end, len - end + 1);
 	}
 	return new_str;
 }
-int pgui_str_is_ascii(const char* str)
-{
+
+int 
+pgui_str_is_ascii(const char* str) {
 	if (!str)
 		return 0;
-	while (*str)
-	{
+	while (*str) {
 		int c = *str;
 		if (c < 0)
 			return 0;
@@ -1371,23 +1319,20 @@ int pgui_str_is_ascii(const char* str)
 	}
 	return 1;
 }
-static char* i_str_set_locale(const char* decimal_symbol)
-{
-	if (decimal_symbol)
-	{
+
+static char * 
+i_str_set_locale(const char* decimal_symbol) {
+	if (decimal_symbol) {
 		struct lconv* locale_info = localeconv();
-		if (locale_info->decimal_point[0] != decimal_symbol[0])
-		{
+		if (locale_info->decimal_point[0] != decimal_symbol[0]) {
 			char* old_locale = setlocale(LC_NUMERIC, NULL);
-			if (decimal_symbol[0] == '.')
-			{
-				old_locale = pgui_str_dup(old_locale);  /* must be before another setlocale */
+			if (decimal_symbol[0] == '.') {
+				old_locale = pgui_str_dup(old_locale);  
 				setlocale(LC_NUMERIC, "en-US");
 				return old_locale;
 			}
-			else if (decimal_symbol[0] == ',')
-			{
-				old_locale = pgui_str_dup(old_locale);  /* must be before another setlocale */
+			else if (decimal_symbol[0] == ',') {
+				old_locale = pgui_str_dup(old_locale);  
 				setlocale(LC_NUMERIC, "pt-BR");
 				return old_locale;
 			}
@@ -1395,16 +1340,17 @@ static char* i_str_set_locale(const char* decimal_symbol)
 	}
 	return NULL;
 }
-static void i_str_reset_locale(char* old_locale)
-{
-	if (old_locale)
-	{
+
+static void 
+i_str_reset_locale(char* old_locale) {
+	if (old_locale) {
 		setlocale(LC_NUMERIC, old_locale);
 		free(old_locale);
 	}
 }
-int pgui_str_to_double_locale(const char *str, double *d, const char* decimal_symbol)
-{
+
+int 
+pgui_str_to_double_locale(const char *str, double *d, const char* decimal_symbol) {
 	int ret, locale_set = 0;
 	char* old_locale;
 	if (!str) 
@@ -1420,9 +1366,10 @@ int pgui_str_to_double_locale(const char *str, double *d, const char* decimal_sy
 	else
 		return 1;
 }
-void pgui_str_printf_double_locale(char *str, const char *format, double d, const char* decimal_symbol)
-{
+
+void pgui_str_printf_double_locale(char *str, const char *format, double d, const char* decimal_symbol) {
 	char* old_locale = i_str_set_locale(decimal_symbol);
 	sprintf(str, format, d);
 	i_str_reset_locale(old_locale);
 }
+
