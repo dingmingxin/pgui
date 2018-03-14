@@ -107,14 +107,16 @@ pgui_str_boolean(const char* str) {
 	return 0;
 }
 
-void pgui_str_upper(char* dstr, const char* sstr) {
+void 
+pgui_str_upper(char* dstr, const char* sstr) {
 	if (!sstr || sstr[0] == 0) return;
 	for (; *sstr; sstr++, dstr++)
 		*dstr = (char)pgui_toupper(*sstr);
 	*dstr = 0;
 }
 
-void pgui_str_lower(char* dstr, const char* sstr) {
+void 
+pgui_str_lower(char* dstr, const char* sstr) {
 	if (!sstr || sstr[0] == 0) return;
 	for (; *sstr; sstr++, dstr++)
 		*dstr = (char)pgui_tolower(*sstr);
@@ -143,7 +145,8 @@ pgui_str_dup(const char *str) {
 	return NULL;
 }
 
-const char* pgui_str_next_line(const char* str, int *len) {
+const char * 
+pgui_str_next_line(const char* str, int *len) {
 	*len = 0;
 	if (!str) return NULL;
 	while(*str!=0 && *str!='\n' && *str!='\r') {
@@ -158,7 +161,8 @@ const char* pgui_str_next_line(const char* str, int *len) {
 		return str;  
 }
 
-const char* pgui_str_next_value(const char* str, int str_len, int *len, char sep) {
+const char * 
+pgui_str_next_value(const char* str, int str_len, int *len, char sep) {
 	int ignore_sep = 0;
 	*len = 0;
 	if (!str) return NULL;
@@ -209,7 +213,8 @@ pgui_str_count_char(const char *str, char c) {
 	return n;
 }
 
-void pgui_str_copy_n(char* dst_str, int dst_max_size, const char* src_str) {
+void 
+pgui_str_copy_n(char* dst_str, int dst_max_size, const char* src_str) {
 	if (src_str) {
 		int size = (int)strlen(src_str) + 1;
 		if (size > dst_max_size) size = dst_max_size;
@@ -783,7 +788,8 @@ pgui_str_file_make_file_name(const char* path, const char* title) {
 	}
 }
 
-void pgui_str_file_name_split(const char* file_name, char *path, char *title) {
+void 
+pgui_str_file_name_split(const char* file_name, char *path, char *title) {
 	int i, n;
 	if (!file_name)
 		return;
@@ -819,7 +825,8 @@ pgui_str_replace(char* str, char src, char dst) {
 	return i;
 }
 
-void pgui_str_to_unix(char* str) {
+void 
+pgui_str_to_unix(char* str) {
 	char* pstr = str;
 	if (!str) return;
 	while (*str) {
@@ -834,7 +841,8 @@ void pgui_str_to_unix(char* str) {
 	*pstr = *str;
 }
 
-void pgui_str_to_mac(char* str) {
+void 
+pgui_str_to_mac(char* str) {
 	char* pstr = str;
 	if (!str) return;
 	while (*str) {
@@ -1367,7 +1375,8 @@ pgui_str_to_double_locale(const char *str, double *d, const char* decimal_symbol
 		return 1;
 }
 
-void pgui_str_printf_double_locale(char *str, const char *format, double d, const char* decimal_symbol) {
+void 
+pgui_str_printf_double_locale(char *str, const char *format, double d, const char* decimal_symbol) {
 	char* old_locale = i_str_set_locale(decimal_symbol);
 	sprintf(str, format, d);
 	i_str_reset_locale(old_locale);
