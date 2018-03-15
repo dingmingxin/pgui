@@ -8,6 +8,8 @@ cmake_policy(SET CMP0015 NEW)
 set(PGUI_SRC_DIR "src")
 set(PGUI_TEST_DIR "test")
 
+list(APPEND COMMON_LIBS "") #create empty list
+
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	include_directories(/usr/local/include /usr/include)
 	link_directories(/usr/local/lib /usr/lib64 /usr/lib)
@@ -20,26 +22,26 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	link_directories(/opt/local/lib)
 
 	#find libs
-	#find_package(OpenGL)
-	#find_package(GLEW)
-	#find_package(PkgConfig REQUIRED)
-	#pkg_search_module(GLFW REQUIRED glfw3)
+	find_package(OpenGL)
+	find_package(GLEW)
+	find_package(PkgConfig REQUIRED)
+	pkg_search_module(GLFW REQUIRED glfw3)
 
-	#list(APPEND LINK_LIBS "") #create empty list
-	#if(OPENGL_FOUND)
-	#    list(APPEND LINK_LIBS ${OPENGL_LIBRARIES})
-	#endif()
-	#if(GLEW_FOUND)
-	#    list(APPEND LINK_LIBS ${GLEW_LIBRARIES})
-	#endif()
-	#if(GLFW_FOUND)
-	#    list(APPEND LINK_LIBS ${GLFW_LIBRARIES})
-	#endif()
+	if(OPENGL_FOUND)
+		list(APPEND COMMON_LIBS ${OPENGL_LIBRARIES})
+	endif()
+	if(GLEW_FOUND)
+		list(APPEND COMMON_LIBS ${GLEW_LIBRARIES})
+	endif()
+	if(GLFW_FOUND)
+		list(APPEND COMMON_LIBS ${GLFW_LIBRARIES})
+	endif()
 endif()
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/${PGUI_TEST_DIR}")
 
+## pgui_test begin
 set(test_source
 	${PGUI_TEST_DIR}/test_pgui_table.c
 	${PGUI_SRC_DIR}/pgui_table.c
@@ -49,3 +51,14 @@ add_executable("pgui_test" ${test_source})
 target_compile_definitions("pgui_test" PRIVATE BIN_PATH="${CMAKE_CURRENT_BINARY_DIR}/bin/")
 set_target_properties("pgui_test" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/")
 
+## pgui_test end
+
+## editor is a special test
+## editor begin
+set(editor_source
+	${PGUI_SRC_DIR}/editor/main.c
+	)
+add_executable("editor" ${editor_source})
+target_include_directories("editor" PUBLIC "${PGUI_SRC_DIR}/editor")
+set_target_properties("editor" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/")
+## editor end
