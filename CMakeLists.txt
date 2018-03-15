@@ -55,10 +55,13 @@ set_target_properties("pgui_test" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_C
 
 ## editor is a special test
 ## editor begin
+set(target_name "editor")
+set(target_link_libs ${LINK_LIBS})
 set(editor_source
 	${PGUI_SRC_DIR}/editor/main.c
 	)
-add_executable("editor" ${editor_source})
-target_include_directories("editor" PUBLIC "${PGUI_SRC_DIR}/editor")
-set_target_properties("editor" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/")
+add_executable(${target_name} ${editor_source})
+target_include_directories(${target_name} PUBLIC "${PGUI_SRC_DIR}/editor")
+set_target_properties(${target_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/")
+target_link_libraries(${target_name} ${target_link_libs})
 ## editor end

@@ -1,0 +1,16 @@
+#ifndef  COMMON_INC
+#define  COMMON_INC
+
+typedef unsigned int RID;
+
+enum UNIFORM_FORMAT {
+	UNIFORM_INVALID = 0,
+	UNIFORM_FLOAT1,
+	UNIFORM_FLOAT2,
+	UNIFORM_FLOAT3,
+	UNIFORM_FLOAT4,
+	UNIFORM_FLOAT33,
+	UNIFORM_FLOAT44,
+};
+
+#endif   /* ----- #ifndef COMMON_INC  ----- */
